@@ -9,7 +9,8 @@ services:
       - "80:80"
     networks:
       - apisix
-
+    depends_on:
+      - etcd
   apisix-dashboard:
     image: apache/apisix-dashboard:2.10.1-alpine
     restart: always
@@ -52,6 +53,15 @@ services:
     networks:
       apisix:
 
+  nest-be:
+    build:
+      context: ./backends/nest-be
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - apisix
+  
 networks:
   apisix:
     driver: bridge
